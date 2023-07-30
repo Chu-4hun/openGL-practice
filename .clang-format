@@ -10,6 +10,8 @@ NamespaceIndentation: All
 QualifierAlignment: Left
 SpaceAfterLogicalNot: false
 SpaceAfterTemplateKeyword: false
+AllowShortBlocksOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: true
 
 ColumnLimit: 100
 

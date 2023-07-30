@@ -5,13 +5,14 @@
 
 #undef main
 
-
 // Triangle vertices
 float vertices[] = {
     -0.5f, -0.5f, 0.0f, //
     0.5f,  -0.5f, 0.0f, //
     0.0f,  0.5f,  0.0f,
 };
+GLint indicies[] = {0, 1, 2, 0, 2, 3};
+
 
 SDL_Window* initWindow() {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -32,22 +33,25 @@ SDL_Window* initWindow() {
     return window;
 }
 
-int main() {
-    auto window = initWindow();
-    if (!window) {
-        return 0;
-    }
-
+void* initOpenGl(SDL_Window* window) {
     glewExperimental = GL_TRUE;
     auto init_res = glewInit();
     auto context = SDL_GL_CreateContext(window);
 
-    if (init_res != GLEW_OK) {
-        std::cout << glewGetErrorString(glewInit()) << std::endl;
-    }
+    if (init_res != GLEW_OK) { std::cout << glewGetErrorString(glewInit()) << std::endl; }
+    return context;
+}
+
+
+int main() {
+    auto window = initWindow();
+    if (!window) return 1;
+
+    auto context = initOpenGl(window);
+    if (!context) return 1;
+
 
     bool should_run = true;
-    GLint indicies[] = {0, 1, 2, 0, 2, 3};
     while (should_run) {
         SDL_Event e;
         while (SDL_PollEvent(&e)) {
