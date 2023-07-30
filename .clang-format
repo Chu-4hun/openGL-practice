@@ -1,3 +1,18 @@
 BasedOnStyle: LLVM
+IndentWidth: 4
+AlignAfterOpenBracket: BlockIndent
+AlignArrayOfStructures: Left
+AllowShortCaseLabelsOnASingleLine: true
+BreakBeforeTernaryOperators: true
+BreakInheritanceList: AfterComma
+MaxEmptyLinesToKeep: 2
+NamespaceIndentation: All
+QualifierAlignment: Left
+SpaceAfterLogicalNot: false
+SpaceAfterTemplateKeyword: false
+
+ColumnLimit: 100
+
 DerivePointerAlignment: false
 PointerAlignment: Left
+ReferenceAlignment: Left
