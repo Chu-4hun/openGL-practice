@@ -11,7 +11,6 @@ float vertices[] = {
     0.5f,  -0.5f, 0.0f, //
     0.0f,  0.5f,  0.0f,
 };
-GLint indicies[] = {0, 1, 2, 0, 2, 3};
 
 
 SDL_Window* initWindow() {
@@ -23,7 +22,8 @@ SDL_Window* initWindow() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
     SDL_Window* window = SDL_CreateWindow(
-        "SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_OPENGL
+        "SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600,
+        SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL
     );
 
     if (window == nullptr) {
@@ -38,8 +38,16 @@ void* initOpenGl(SDL_Window* window) {
     auto init_res = glewInit();
     auto context = SDL_GL_CreateContext(window);
 
-    if (init_res != GLEW_OK) { std::cout << glewGetErrorString(glewInit()) << std::endl; }
+    if (init_res != GLEW_OK) {
+        std::cout << glewGetErrorString(glewInit()) << std::endl;
+    }
     return context;
+}
+void closeWindow(SDL_Window* window, void* context) {
+    SDL_GL_DeleteContext(context);
+    SDL_DestroyWindow(window);
+    glUseProgram(0);
+    SDL_Quit();
 }
 
 
@@ -50,22 +58,38 @@ int main() {
     auto context = initOpenGl(window);
     if (!context) return 1;
 
+    uint32_t vertex_buffer;
+    glGenBuffers(1, &vertex_buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
 
     bool should_run = true;
     while (should_run) {
-        SDL_Event e;
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_CLOSE) {
-                SDL_GL_DeleteContext(context);
-                SDL_DestroyWindow(window);
-                SDL_Quit();
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            glDrawArrays(GL_TRIANGLES,0,3);
+//            glDrawElements(GL_TRIANGLES, 3,)
+
+            SDL_GL_SwapWindow(window);
+
+            switch (event.type) {
+            case SDL_QUIT:
+                closeWindow(window, context);
                 should_run = false;
                 break;
+            case SDL_KEYDOWN:
+                auto keys = SDL_GetKeyboardState(nullptr);
+                if (keys[SDL_SCANCODE_ESCAPE]) {
+                    closeWindow(window, context);
+                    should_run = false;
+                }
+                break;
             }
-            glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, indicies);
-            SDL_GL_SwapWindow(window);
         }
     }
 
