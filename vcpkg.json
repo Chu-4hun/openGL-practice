@@ -5,6 +5,7 @@
   "dependencies": [
     "glew",
     "sdl2",
+    "glm",
     {
       "name": "fmt",
       "version>=": "9.1.0"

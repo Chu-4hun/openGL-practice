@@ -8,6 +8,7 @@ project(leetcode VERSION 0.1.0 LANGUAGES C CXX)
 find_package(fmt CONFIG REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
+find_package(glm CONFIG REQUIRED)
 
 
 add_executable(${PROJECT_NAME} main.cpp)
@@ -15,7 +16,7 @@ add_executable(${PROJECT_NAME} main.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt
         $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
         $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
-        GLEW::GLEW
+        GLEW::GLEW glm::glm
         )
 
 

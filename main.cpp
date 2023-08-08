@@ -8,11 +8,16 @@
 
 #undef main
 
-// Triangle vertices
 float vertices[] = {
-    -0.5f, -0.5f, 0.0f, //
-    0.5f,  -0.5f, 0.0f, //
-    0.0f,  0.5f,  0.0f  //
+    0.5f,  0.5f,  0.0f, // Верхний правый угол
+    0.5f,  -0.5f, 0.0f, // Нижний правый угол
+    -0.5f, -0.5f, 0.0f, // Нижний левый угол
+    -0.5f, 0.5f,  0.0f  // Верхний левый угол
+};
+float colours[] = {1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+uint32_t indices[] = {
+    0, 1, 3, // Первый треугольник
+    1, 2, 3  // Второй треугольник
 };
 
 struct ShaderSources {
@@ -126,18 +131,38 @@ int main() {
     auto context = initOpenGl(window);
     if (!context) return 1;
 
+
+    uint32_t VAO;
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
     uint32_t VBO;
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
 
+    uint32_t Color_VBO = 0;
+    glGenBuffers(1, &Color_VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, Color_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(colours), colours, GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
+
+    uint32_t EBO;
+    glGenBuffers(1, &EBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
+    glEnableVertexAttribArray(1);
+
+    glBindVertexArray(0);
 
     ShaderSources sources = parseShader("../res/shaders/base.glsl");
     uint32_t shader = createShader(sources.vertexSource, sources.fragmentSource);
+
     glUseProgram(shader);
+
 
     bool should_run = true;
     while (should_run) {
@@ -147,12 +172,18 @@ int main() {
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
+            glBindVertexArray(VAO);
+//            glDrawArrays(GL_TRIANGLES, 0, 3);
+//            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Wireframe mode
 
-            glDrawArrays(GL_TRIANGLES, 0, 3);
-            //            glDrawElements(GL_TRIANGLES, 3,)
+            glEnable(GL_CULL_FACE); // cull face
+            glCullFace(GL_BACK);    // cull back face
+            glFrontFace(GL_CW);     // GL_CCW for counter clock-wise
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glBindVertexArray(0);
+
 
             SDL_GL_SwapWindow(window);
-
             switch (event.type) {
             case SDL_QUIT:
                 closeWindow(window, context, shader);
