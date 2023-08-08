@@ -8,13 +8,15 @@
 
 #undef main
 
-float vertices[] = {
-    0.5f,  0.5f,  0.0f, // Верхний правый угол
-    0.5f,  -0.5f, 0.0f, // Нижний правый угол
-    -0.5f, -0.5f, 0.0f, // Нижний левый угол
-    -0.5f, 0.5f,  0.0f  // Верхний левый угол
+
+
+GLfloat vertices[] = {
+    // Позиции         // Цвета
+    0.5f,  0.5f, 0.0f,  /**/ 1.0f, 0.0f, 0.0f, // Нижний правый угол
+     0.5f, -0.5f, 0.0f, /**/ 0.0f, 1.0f, 0.0f, // Нижний левый угол
+    -0.5f, -0.5f, 0.0f, /**/ 0.0f, 0.0f, 1.0f, // Верхний угол
+    -0.5f,  0.5f, 0.0f,  /**/ 1.0f, 0.0f, 1.0f  // Верхний угол
 };
-float colours[] = {1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f};
 uint32_t indices[] = {
     0, 1, 3, // Первый треугольник
     1, 2, 3  // Второй треугольник
@@ -140,21 +142,17 @@ int main() {
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (GLvoid*)0);
+    glEnableVertexAttribArray(0);
 
-    uint32_t Color_VBO = 0;
-    glGenBuffers(1, &Color_VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, Color_VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(colours), colours, GL_STATIC_DRAW);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     uint32_t EBO;
     glGenBuffers(1, &EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);
 
@@ -173,12 +171,9 @@ int main() {
             glClear(GL_COLOR_BUFFER_BIT);
 
             glBindVertexArray(VAO);
-//            glDrawArrays(GL_TRIANGLES, 0, 3);
-//            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Wireframe mode
+            //                        glDrawArrays(GL_TRIANGLES, 0, 3);
+            //            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Wireframe mode
 
-            glEnable(GL_CULL_FACE); // cull face
-            glCullFace(GL_BACK);    // cull back face
-            glFrontFace(GL_CW);     // GL_CCW for counter clock-wise
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
 
