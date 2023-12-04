@@ -1,14 +1,10 @@
 {
   "name": "leetcode",
   "version-string": "1.0.0",
-  "builtin-baseline": "8b04a7bd93bef991818fc372bb83ce00ec1c1c16",
+  "builtin-baseline": "241428568b25ad19c2a2cdaa70ce3300375309d6",
   "dependencies": [
     "glew",
     "sdl2",
-    "glm",
-    {
-      "name": "fmt",
-      "version>=": "9.1.0"
-    }
+    "glm"
   ]
 }

@@ -3,8 +3,8 @@
 //
 
 #include "GLShader.h"
-#include "glm/gtc/type_ptr.hpp"
 #include "GL/glew.h"
+#include "glm/gtc/type_ptr.hpp"
 #include <fstream>
 #include <iostream>
 #include <sstream>

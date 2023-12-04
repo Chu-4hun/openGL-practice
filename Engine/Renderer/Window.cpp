@@ -18,7 +18,7 @@ namespace ChuEngine {
     void* Window::initContext(SDL_Window* window) {
         glewExperimental = GL_TRUE;
         auto init_res = glewInit();
-        auto context = SDL_GL_CreateContext(window);
+                auto context = SDL_GL_CreateContext(window);
 
         if (init_res != GLEW_OK) {
             std::cout << glewGetErrorString(glewInit()) << std::endl;
@@ -33,7 +33,7 @@ namespace ChuEngine {
         }
 
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
         this->window = SDL_CreateWindow(
             "SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600,
             SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL

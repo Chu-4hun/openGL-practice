@@ -3,9 +3,11 @@
 //
 
 #pragma once
+#include <glm/vec3.hpp>
 
 namespace ChuEngine {
-    class GLVertex {
-
+    struct  GLVertex {
+        glm::vec3 coords;
+        glm::vec3 color;
     };
-}
+} // namespace ChuEngine
