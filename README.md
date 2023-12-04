@@ -1,4 +1,6 @@
-This is a pet project created to explore and learn OpenGL. The project aims to provide a simple and educational introduction to graphics programming using OpenGL.
+# OpenGl practice
+
+This is a pet project created to explore and learn OpenGL.
 
 ## Table of Contents
 
@@ -21,7 +23,6 @@ The Pet Learning OpenGL Project is designed to serve as a hands-on learning expe
 
 - Basic rendering using OpenGL.
 - Simple shader programs for vertex and fragment processing.
-- Structured project layout for ease of understanding.
 
 ## Getting Started
 
