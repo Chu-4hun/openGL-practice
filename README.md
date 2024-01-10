@@ -70,7 +70,6 @@ The project is structured as follows:
 
 The project relies on the following dependencies:
 
-- [GLFW](https://www.glfw.org/)
 - [GLEW](http://glew.sourceforge.net/)
 - [SDL2](https://www.libsdl.org/)
 * Build dependencies
